@@ -225,7 +225,7 @@ async def all_users(conn, client):
     ADDS IT TO THE ACTIVE USERS LIST.
 
     This can only run 100 users per 30 seconds. If you do not care about how many posts are from
-    deleted users you can comment out the call to this function on line 325 to speed up this program.
+    deleted users you can comment out the call to this function on line 331 to speed up this program.
     '''
     cur = conn.cursor()
     cur.execute('SELECT DISTINCT user_id FROM messages')
@@ -300,8 +300,8 @@ def main():
     with client:
         users = client.loop.run_until_complete(get_all_users(client))
 
-    # UNCOMMENT THIS SECTION THE FIRST TIME YOU RUN THIS SCRIPT. YOU CAN LEAVE IT UNCOMMENTED EVERY TIME YOU RUN IT,
-    # IT WILL JUST SLOW DOWN THE SCRIPT.
+    # COMMENT OUT THE BELOW SECTION (Lines 305 - 326) AFTER THE FIRST TIME YOU RUN THIS SCRIPT. 
+    # YOU CAN LEAVE IT UNCOMMENTED EVERY TIME YOU RUN IT, IT WILL JUST SLOW DOWN THE SCRIPT.
 
     sql_create_users_table = '''CREATE TABLE IF NOT EXISTS users (
                                     key integer PRIMARY KEY,
@@ -324,6 +324,7 @@ def main():
         create_table(conn, sql_create_users_table)
     else:
         print('Error | Cannot create the database connection')
+
 
     with client:
         messages = client.loop.run_until_complete(get_messages(conn, client))
